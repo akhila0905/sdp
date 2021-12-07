@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
+import axios from "axios";
 
-const FormStyle = styled.form`
+const form = styled.form`
   width: 100%;
   .form-group {
     width: 100%;
@@ -39,51 +40,65 @@ const FormStyle = styled.form`
   }
 `;
 
-export default function ContactForm() {
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
-  return (
-    <>
-      <FormStyle>
-        <div className="form-group">
-          <label htmlFor="name">
-            Your Name
-            <input
-              type="text"
-              id="name"
-              name="name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-          </label>
+export  class ContactForm extends React.Component {
+ 
+  submitUser(event)
+  {
+      event.preventDefault();
+      const form = event.target;
+      axios.post('http://localhost:5000/ContactUs',{
+          Name:this.refs.name.value,
+          email:this.refs.email.value,
+          message:this.refs.message.value
+      })
+      .then((response)=>{
+          console.log(response);
+      })
+      .catch((err)=>{
+          console.log(err);
+      });
+      form.reset();
+  }
+
+  render(){
+    return (
+      
+        <div className="base-container">
+      
+      <div className="content">
+        <form className="col s12"  onSubmit={this.submitUser.bind(this)} >
+        <div className="form">
+          <div className="form-group" style={{width: '100%',marginBottom: '2rem'}}>
+            <label htmlFor="username" style={{fontSize:'1.8rem'}}>name
+            <input id="name" ref="name" type="text" style={{ width: '100%',fontSize: '2rem',padding:'1.2rem',color: 'white',backgroundColor: '#383B39',outline: 'none',border: 'none',borderRadius: '8px solid black', marginTop:'1rem'}} name="name"  />
+            </label>
+          </div>
+          <div className="form-group">
+            <label htmlFor="email" style={{fontSize:'1.8rem'}}>Email</label>
+            <input id="email" ref="email" type="text" style={{ width: '100%',fontSize: '2rem',padding:'1.2rem',color: 'white',backgroundColor: '#383B39',outline: 'none',border: 'none',borderRadius: '8px solid black', marginTop:'1rem'}} name="email" />
+          </div>
+          <div className="form-group">
+            <label htmlFor="message" style={{fontSize:'1.8rem'}}>message</label>
+            <input id="password" ref="message" style={{width: '100%',fontSize: '2rem',padding:'1.2rem',color: 'white',backgroundColor: '#383B39',outline: 'none',border: 'none',borderRadius: '8px solid black', marginTop:'1rem',minHeight: '250px'}} type="text" name="message" />
+          </div>
+          <div className="footer">
+         
+        <button type="button" type="submit" name="action" style={{backgroundColor: 'black',color: 'white',fontSize: '2rem',display: 'inline-block',outline: 'none',border: 'none',padding: '1rem 4rem',borderRadius: '8px',cursor: 'pointer'}} className="btn">
+          Send
+        </button>
+      </div>
         </div>
-        <div className="form-group">
-          <label htmlFor="email">
-            Your Email
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </label>
-        </div>
-        <div className="form-group">
-          <label htmlFor="message">
-            Your message
-            <textarea
-              type="text"
-              id="message"
-              name="message"
-              value={message}
-              onChange={(e) => setMessage(e.target.value)}
-            />
-          </label>
-        </div>
-        <button type="submit">Send</button>
-      </FormStyle>
-    </>
-  );
+        </form>
+      </div>
+     
+      
+    </div>
+     
+   
+       
+        
+ 
+     
+    );
+  }
 }

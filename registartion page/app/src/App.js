@@ -8,6 +8,7 @@ import Products from './components/pages/Products';
 import app1 from './components/pages/app1';
 import Contact from './components/pages/Contact'
 
+
 function App() {
   return (
     <>
@@ -21,6 +22,7 @@ function App() {
           <Route path='/sign-up' component={app1} />
         </Switch>
       </Router>
+      
     </>
   );
 }
